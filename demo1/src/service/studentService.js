@@ -1,39 +1,45 @@
+import axios from "axios";
 
-const studentList = [
-    {
-        id:1,
-        name:"chánh",
-        className : "C03"
-    },
-    {
-        id:2,
-        name:"chánh3",
-        className : "C03"
-    },
-    {
-        id:3,
-        name:"chánh3",
-        className : "C03"
-    },
-]
+const BE_URL = import.meta.env.VITE_BE_URL;
 
-export const  findAll = ()=>{
-    return [...studentList]
-}
 
-export const addNew=(student) => {
-    studentList.push(student)
-    return true;
-}
-export const deleteByID= (id)=>{
-    for (let i = 0; i <studentList.length ; i++) {
-        if (studentList[i].id ==id){
-            studentList.splice(i,1);
-            break
-        }
+export const  findAll = async ()=>{
+    try{
+        const res = await axios.get(`${BE_URL}/students`);
+        return res.data;
+    }catch (e){
+        console.log(e);
+        return [];
     }
-    return true;
+
 }
-export const findById= (id)=>{
-    return studentList.find(s=>s.id==id);
+
+export const addNew=async (student) => {
+    try{
+        const res = await axios.post(`${BE_URL}/students`,student);
+        return res.status==201;
+    }catch (e){
+        console.log(e);
+        return false;
+    }
+}
+
+export const deleteByID= async (id)=>{
+
+    try{
+        const res = await axios.delete(`${BE_URL}/students/${id}`);
+        return res.status==200;
+    }catch (e){
+        console.log(e);
+        return false;
+    }
+}
+export const findById= async (id)=>{
+    try{
+        const res = await axios.get(`${BE_URL}/students/${id}`);
+        return res.data;
+    }catch (e){
+        console.log(e);
+        return [];
+    }
 }

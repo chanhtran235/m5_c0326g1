@@ -7,11 +7,18 @@ const List =()=>{
     const [studentList,setStudentList] = useState([]);
     const [showModal, setShowModel] = useState(false);
     const [deleteStudent,setDeleteStudent] = useState({});
-    const [isReloading, setIsReloading] = useState(false)
-    useEffect(()=>{
+    const [isReloading, setIsReloading] = useState(false);
+
+    useEffect(  ()=>{
         console.log("----useEffec run---------");
-        setStudentList([...findAll()])
+        const fetData = async()=>{
+            const list = await findAll();
+            setStudentList(list);
+        };
+        fetData();
     },[isReloading]);
+
+
    const handleShowModal= (student)=>{
         setShowModel(true);
         setDeleteStudent(student);
@@ -51,7 +58,7 @@ const List =()=>{
                             <td>{i+1}</td>
                             <td>{student.id}</td>
                             <td>{student.name}</td>
-                            <td>{student.className}</td>
+                            <td>{student.class?.name}</td>
                             <td>
                                 <Link className={'btn btn-sm btn-secondary'} to={`/dashboard/student/detail/${student.id}`}>Chi tiết</Link>
                             </td>
